@@ -7,13 +7,17 @@ import java.util.Random;
 
 public class MediumLotteryProvider implements LotteryProvider {
 
-	List<Integer> results;
+	// List<Integer> results;
+	private List<Integer> results;
 
-	Random random;
+	// Random random;
+	private Random random;
 
-	boolean active;
+	// boolean active;
+	private boolean active;
 
-	String errors = "";
+	// String errors = "";
+	private String errors = "";
 
 	public MediumLotteryProvider() {
 		results = Collections.synchronizedList(new ArrayList<Integer>());
@@ -43,8 +47,10 @@ public class MediumLotteryProvider implements LotteryProvider {
 					active = false;
 				}
 				results.add(lotteryValue);
-			} catch (Throwable e) {
-				errors += "System fail with error " + e.getMessage() + "check lottery value [" + lotteryValue + "]";
+				// } catch (Throwable e) {
+			} catch (Exception e) {
+				errors += "System fail with error " + e.getMessage() + "check lottery value [" + lotteryValue
+						+ "]";
 			}
 		}
 		return results;

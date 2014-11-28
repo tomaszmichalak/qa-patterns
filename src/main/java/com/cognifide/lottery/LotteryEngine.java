@@ -38,6 +38,7 @@ public class LotteryEngine {
 					provider.wait(2);
 				}
 			} catch (InterruptedException e) {
+				// hidden exception!
 			}
 		}
 	}
@@ -47,7 +48,7 @@ public class LotteryEngine {
 	}
 
 	private void calculateLotteryWithUniqueNumbers(LotteryResult lotteryResult) {
-		Set<Integer> lotteryNumbers = new HashSet<Integer>(lotteryResult.lotteryNumbers);
+		Set<Integer> lotteryNumbers = new HashSet(lotteryResult.getLotteryNumbers());
 		for (Integer lotteryNumber : lotteryNumbers) {
 			if (isUniqueAcceptable(lotteryNumber)) {
 				System.out.println("Unique number found: " + lotteryNumber);
@@ -75,7 +76,7 @@ public class LotteryEngine {
 	}
 
 	private void calculateLotteryWithFirstElement(LotteryResult lotteryResult) {
-		Set<Integer> sortedNumbers = new TreeSet<Integer>(lotteryResult.lotteryNumbers);
+		Set<Integer> sortedNumbers = new TreeSet(lotteryResult.getLotteryNumbers());
 		if (!sortedNumbers.isEmpty()) {
 			System.out.println("Min number is :" + sortedNumbers.iterator().next());
 		}

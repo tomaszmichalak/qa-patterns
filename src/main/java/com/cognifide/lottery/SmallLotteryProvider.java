@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class SmallLotteryProvider implements LotteryProvider {
 
-	protected Vector results;
+	protected Vector results; // vector?
 
 	private Random random;
 
