@@ -1,33 +1,22 @@
 package com.cognifide.lottery;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class LotteryEngine implements LotteryObserver {
 
-	ExecutorService executorService;
+	private ExecutorService executorService;
 
-	public void start(String lotteryType) {
-
+	public LotteryEngine() {
 		executorService = Executors.newSingleThreadExecutor();
-		final LotteryProvider provider;
+	}
 
-		if (lotteryType.equals("SMALL")) {
-			provider = new SmallLotteryProvider();
-		} else if (lotteryType.equals("MEDIUM")) {
-			provider = new MediumLotteryProvider();
-		} else if (lotteryType.equals("BIG")) {
-			provider = new BigLotteryProvider();
-		} else {
-			throw new IllegalArgumentException();
-		}
-
+	public void start(LotteryProviderType lotteryType) {
+		final LotteryProvider provider = LotteryProviderFactory.create(lotteryType);
 		provider.register(this);
 
 		try {
