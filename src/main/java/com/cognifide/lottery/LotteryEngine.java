@@ -4,11 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class LotteryEngine {
+public class LotteryEngine implements LotteryObserver {
 
 	ExecutorService executorService;
 
@@ -27,18 +28,11 @@ public class LotteryEngine {
 			throw new IllegalArgumentException();
 		}
 
-		final Future<List<Integer>> submit = executorService.submit(provider);
+		provider.register(this);
 
-		while (!submit.isDone()) {
-			LotteryResult results = provider.getResults();
-			calculateLotteryWithUniqueNumbers(results);
-			calculateLotteryWithFirstElement(results);
-			try {
-				synchronized (provider) {
-					provider.wait(2);
-				}
-			} catch (InterruptedException e) {
-			}
+		try {
+			executorService.submit(provider).get();
+		} catch (InterruptedException | ExecutionException e) {
 		}
 	}
 
@@ -47,7 +41,7 @@ public class LotteryEngine {
 	}
 
 	private void calculateLotteryWithUniqueNumbers(LotteryResult lotteryResult) {
-		Set<Integer> lotteryNumbers = new HashSet<Integer>(lotteryResult.lotteryNumbers);
+		Set<Integer> lotteryNumbers = new HashSet(lotteryResult.lotteryNumbers);
 		for (Integer lotteryNumber : lotteryNumbers) {
 			if (isUniqueAcceptable(lotteryNumber)) {
 				System.out.println("Unique number found: " + lotteryNumber);
@@ -75,10 +69,16 @@ public class LotteryEngine {
 	}
 
 	private void calculateLotteryWithFirstElement(LotteryResult lotteryResult) {
-		Set<Integer> sortedNumbers = new TreeSet<Integer>(lotteryResult.lotteryNumbers);
+		Set<Integer> sortedNumbers = new TreeSet(lotteryResult.lotteryNumbers);
 		if (!sortedNumbers.isEmpty()) {
 			System.out.println("Min number is :" + sortedNumbers.iterator().next());
 		}
+	}
+
+	@Override
+	public void notify(LotteryResult lotteryResult) {
+		calculateLotteryWithUniqueNumbers(lotteryResult);
+		calculateLotteryWithFirstElement(lotteryResult);
 	}
 
 }

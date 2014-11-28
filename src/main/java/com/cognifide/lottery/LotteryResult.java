@@ -10,6 +10,7 @@ public class LotteryResult {
 
 	LotteryResult(List<Integer> lotteryNumbers) {
 		this.lotteryNumbers = lotteryNumbers;
+		timestamp = System.currentTimeMillis();
 	}
 
 }

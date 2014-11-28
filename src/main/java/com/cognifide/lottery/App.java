@@ -10,7 +10,7 @@ public class App {
 			lotteryEngine.start(args[0]);
 			lotteryEngine.stop();
 		} catch (Exception e) {
-			//lotteryEngine.stop();
+			lotteryEngine.stop();
 		}
 	}
 
