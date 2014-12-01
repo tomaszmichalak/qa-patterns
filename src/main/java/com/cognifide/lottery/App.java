@@ -7,9 +7,9 @@ public class App {
 	public static void main(String[] args) {
 		lotteryEngine = new LotteryEngine();
 		try {
-			final LotteryProviderType lotteryType = LotteryProviderType.valueOf(args[0]);
-			lotteryEngine.start(lotteryType);
-		} finally {
+			lotteryEngine.start(args[0]);
+			lotteryEngine.stop();
+		} catch (Exception e) {
 			lotteryEngine.stop();
 		}
 	}
