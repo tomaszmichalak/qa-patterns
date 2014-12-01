@@ -4,7 +4,7 @@ public class SmallLotteryProvider extends AbstractLotteryProvider {
 
 	@Override
 	protected int getRangeNumber() {
-		return 100;
+		return LotteryProviderRange.SMALL.getRange();
 	}
 
 }

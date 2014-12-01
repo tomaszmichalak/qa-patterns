@@ -4,6 +4,6 @@ public class MediumLotteryProvider extends AbstractLotteryProvider {
 
 	@Override
 	protected int getRangeNumber() {
-		return 1000;
+		return LotteryProviderRange.MEDIUM.getRange();
 	}
 }

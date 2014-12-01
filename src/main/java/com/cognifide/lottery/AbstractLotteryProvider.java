@@ -8,16 +8,15 @@ import java.util.Random;
 
 public abstract class AbstractLotteryProvider implements LotteryProvider {
 
-	private List<LotteryObserver> observers;
+	public static final int LOTTERY_RETRY_COUNT = 10;
 
-	private List<Integer> results;
+	private List<LotteryObserver> observers;
 
 	private Random random;
 
 	private boolean active;
 
 	public AbstractLotteryProvider() {
-		results = Collections.synchronizedList(new ArrayList<Integer>());
 		observers = new LinkedList<>();
 		random = new Random();
 		active = true;
@@ -25,11 +24,8 @@ public abstract class AbstractLotteryProvider implements LotteryProvider {
 
 	protected abstract int getRangeNumber();
 
-	public void notifyObservers() {
-		List<Integer> response = results;
-		results = Collections.synchronizedList(new ArrayList<Integer>());
-
-		LotteryResult lotteryResult = new LotteryResult(Collections.unmodifiableList(response));
+	public void notifyObservers(List<Integer> results) {
+		LotteryResult lotteryResult = new LotteryResult(Collections.unmodifiableList(results));
 		for (LotteryObserver observer : observers) {
 			observer.notify(lotteryResult);
 		}
@@ -37,13 +33,17 @@ public abstract class AbstractLotteryProvider implements LotteryProvider {
 
 	@Override
 	public List<Integer> call() throws Exception {
+		List<Integer> results = new ArrayList();
 		while (active) {
-			final int lotteryValue = random.nextInt(getRangeNumber());
-			if (lotteryValue == 0) {
-				active = false;
+			results = new ArrayList();
+			for (int i = 0; i < random.nextInt(LOTTERY_RETRY_COUNT); i++) {
+				final int lotteryValue = random.nextInt(getRangeNumber());
+				if (lotteryValue == 0) {
+					active = false;
+				}
+				results.add(lotteryValue);
 			}
-			results.add(lotteryValue);
-			notifyObservers();
+			notifyObservers(results);
 			Thread.sleep(1);
 		}
 		return results;

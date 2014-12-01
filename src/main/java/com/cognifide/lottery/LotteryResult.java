@@ -4,13 +4,20 @@ import java.util.List;
 
 public class LotteryResult {
 
-	public List<Integer> lotteryNumbers;
+	private List<Integer> lotteryNumbers;
 
-	public long timestamp;
+	private long timestamp;
 
 	LotteryResult(List<Integer> lotteryNumbers) {
 		this.lotteryNumbers = lotteryNumbers;
 		timestamp = System.currentTimeMillis();
 	}
 
+	public List<Integer> getLotteryNumbers() {
+		return lotteryNumbers;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
 }
