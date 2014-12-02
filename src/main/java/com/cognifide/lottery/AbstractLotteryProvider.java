@@ -25,7 +25,7 @@ public abstract class AbstractLotteryProvider implements LotteryProvider {
 
 	protected abstract int getRangeNumber();
 
-	public void notifyObservers() {
+	private void notifyObservers() {
 		List<Integer> response = results;
 		results = Collections.synchronizedList(new ArrayList<Integer>());
 

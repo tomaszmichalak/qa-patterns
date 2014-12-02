@@ -1,5 +1,6 @@
 package com.cognifide.lottery;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,10 +42,10 @@ public class LotteryEngine implements LotteryObserver {
 	}
 
 	private void calculateLotteryWithUniqueNumbers(LotteryResult lotteryResult) {
-		Set<Integer> lotteryNumbers = new HashSet(lotteryResult.lotteryNumbers);
+		Set<Integer> lotteryNumbers = new HashSet(lotteryResult.getLotteryNumbers());
 		for (Integer lotteryNumber : lotteryNumbers) {
 			if (isUniqueAcceptable(lotteryNumber)) {
-				System.out.println("Unique number found: " + lotteryNumber);
+				System.out.println(String.format("[%s] Unique number found: %s", new Date(lotteryResult.getTimeExecution()), lotteryNumber));
 			}
 		}
 	}
@@ -69,7 +70,7 @@ public class LotteryEngine implements LotteryObserver {
 	}
 
 	private void calculateLotteryWithFirstElement(LotteryResult lotteryResult) {
-		Set<Integer> sortedNumbers = new TreeSet(lotteryResult.lotteryNumbers);
+		Set<Integer> sortedNumbers = new TreeSet(lotteryResult.getLotteryNumbers());
 		if (!sortedNumbers.isEmpty()) {
 			System.out.println("Min number is :" + sortedNumbers.iterator().next());
 		}
